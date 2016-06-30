@@ -24,7 +24,7 @@ public class Server implements Runnable {
 	private UserDao userDao;
 	
 	@Override
-	public void run() { // need to start server socket
+	public void run() {
 		try (ServerSocket serverSocket = new ServerSocket(667)) {
 			log.info("Starting server.");
 			while (true) {
