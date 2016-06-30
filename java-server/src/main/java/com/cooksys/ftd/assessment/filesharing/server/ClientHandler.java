@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -18,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.cooksys.ftd.assessment.filesharing.dao.*;
 import com.cooksys.ftd.assessment.filesharing.model.api.*;
 import com.cooksys.ftd.assessment.filesharing.model.db.ClientMessage;
-import com.cooksys.ftd.chat.model.ServerMessage;
 
 public class ClientHandler implements Runnable {
 	
@@ -42,7 +42,7 @@ public class ClientHandler implements Runnable {
 			ClientMessage message = (ClientMessage) unmarshaller.unmarshal(sr);
 			if (message.getCommand() == "register") {
 				StringWriter sw = new StringWriter();
-				ServerResponse temp = CreateUser.newUser(message.getContent());
+				ServerResponse<String> temp = CreateUser.newUser(message.getContent());
 				this.content = JAXBContext.newInstance(ServerResponse.class);
 				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 				marshaller.marshal(temp.getData(), sw);
@@ -50,7 +50,7 @@ public class ClientHandler implements Runnable {
 				this.writer.flush();
 			} else if (message.getCommand() == "login") {
 				StringWriter sw = new StringWriter();
-				ServerResponse temp = GetUserByUsername.getPassword();
+				ServerResponse<String> temp = GetUserByUsername.getPassword(message.getContent());
 				this.content = JAXBContext.newInstance(ServerResponse.class);
 				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 				marshaller.marshal(temp.getData(), sw);
@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable {
 				this.writer.flush();
 			} else if (message.getCommand() == "files") {
 				StringWriter sw = new StringWriter();
-				ServerResponse temp = IndexFile.getFileList();
+				ServerResponse<List<String>> temp = IndexFile.getFileList(message.getContent());
 				this.content = JAXBContext.newInstance(ServerResponse.class);
 				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 				marshaller.marshal(temp.getData(), sw);
@@ -66,7 +66,7 @@ public class ClientHandler implements Runnable {
 				this.writer.flush();
 			} else if (message.getCommand() == "upload") {
 				StringWriter sw = new StringWriter();
-				ServerResponse temp = AddFile.newFile(message.getContent());
+				ServerResponse<String> temp = AddFile.newFile(message.getContent());
 				this.content = JAXBContext.newInstance(ServerResponse.class);
 				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 				marshaller.marshal(temp.getData(), sw);
@@ -74,7 +74,7 @@ public class ClientHandler implements Runnable {
 				this.writer.flush();
 			} else if (message.getCommand() == "download") {
 				StringWriter sw = new StringWriter();
-				ServerResponse temp = SendFile.getFile(message.getContent());
+				ServerResponse<byte[]> temp = SendFile.getFile(message.getContent());
 				this.content = JAXBContext.newInstance(ServerResponse.class);
 				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 				marshaller.marshal(temp.getData(), sw);
