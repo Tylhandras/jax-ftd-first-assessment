@@ -19,16 +19,16 @@ public class Server implements Runnable {
 	private Logger log = LoggerFactory.getLogger(Server.class);
 	
 	private ExecutorService executor;
-	private ServerSocket serverSocket;
 	
 	private FileDao fileDao;
 	private UserDao userDao;
 	
 	@Override
-	public void run() {
-		try {
+	public void run() { // need to start server socket
+		try (ServerSocket serverSocket = new ServerSocket(667)) {
+			log.info("Starting server.");
 			while (true) {
-				Socket socket = this.serverSocket.accept();
+				Socket socket = serverSocket.accept();
 				ClientHandler handler = this.createClientHandler(socket);
 				this.executor.execute(handler);
 			}
@@ -58,14 +58,6 @@ public class Server implements Runnable {
 
 	public void setExecutor(ExecutorService executor) {
 		this.executor = executor;
-	}
-
-	public ServerSocket getServerSocket() {
-		return serverSocket;
-	}
-
-	public void setServerSocket(ServerSocket serverSocket) {
-		this.serverSocket = serverSocket;
 	}
 
 	public FileDao getFileDao() {
