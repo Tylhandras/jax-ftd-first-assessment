@@ -4,13 +4,13 @@ public class UserFiles {
 	
 	private Integer fileId;
 	private String absolutePath;
-	private Object fileData;  // This may change when the CLI is implemented.
+	private byte[] fileData;
 	
 	public UserFiles() {
 		super();
 	}
 	
-	public UserFiles(Integer fileId, String absolutePath, Object fileData) {
+	public UserFiles(Integer fileId, String absolutePath, byte[] fileData) {
 		super();
 		this.fileId = fileId;
 		this.absolutePath = absolutePath;
@@ -33,11 +33,11 @@ public class UserFiles {
 		this.absolutePath = absolutePath;
 	}
 	
-	public Object getFileData() {
+	public byte[] getFileData() {
 		return fileData;
 	}
 	
-	public void setFileData(Object fileData) {
+	public void setFileData(byte[] fileData) {
 		this.fileData = fileData;
 	}
 	

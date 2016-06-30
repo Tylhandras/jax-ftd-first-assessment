@@ -2,7 +2,7 @@ package com.cooksys.ftd.assessment.filesharing.model.db;
 
 public class User {
 	
-	private Integer userId;
+	private Short userId;
 	private String username;
 	private String password;
 	
@@ -10,18 +10,18 @@ public class User {
 		super();
 	}
 	
-	public User(Integer userId, String username, String password) {
+	public User(Short userId, String username, String password) {
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
 	}
 	
-	public Integer getUserId() {
+	public Short getUserId() {
 		return userId;
 	}
 	
-	public void setUserId(Integer userId) {
+	public void setUserId(Short userId) {
 		this.userId = userId;
 	}
 	
