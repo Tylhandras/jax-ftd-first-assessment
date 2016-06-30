@@ -50,7 +50,7 @@ public class ClientHandler implements Runnable {
 				this.writer.flush();
 			} else if (message.getCommand() == "login") {
 				StringWriter sw = new StringWriter();
-				ServerResponse<String> temp = GetUserByUsername.getPassword(message.getContent());
+				ServerResponse<String> temp = GetUser.getPassword(message.getContent());
 				this.content = JAXBContext.newInstance(ServerResponse.class);
 				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 				marshaller.marshal(temp.getData(), sw);
@@ -74,7 +74,7 @@ public class ClientHandler implements Runnable {
 				this.writer.flush();
 			} else if (message.getCommand() == "download") {
 				StringWriter sw = new StringWriter();
-				ServerResponse<byte[]> temp = SendFile.getFile(message.getContent());
+				ServerResponse<String> temp = SendFile.getFile(message.getContent());
 				this.content = JAXBContext.newInstance(ServerResponse.class);
 				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 				marshaller.marshal(temp.getData(), sw);

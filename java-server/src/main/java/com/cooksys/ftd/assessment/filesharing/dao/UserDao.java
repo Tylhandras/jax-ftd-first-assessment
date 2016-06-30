@@ -22,6 +22,7 @@ public class UserDao extends AbstractDao {
 			PreparedStatement stmt = this.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, user.getUsername());
 			stmt.setString(2, user.getPassword());
+			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
 				user.setUserId(rs.getShort(1));
@@ -33,7 +34,7 @@ public class UserDao extends AbstractDao {
 		return user;
 	}
 	
-	public Optional<String> getUserByUsername (String username) {
+	public Optional<String> getUserPassword (String username) {
 		try {
 			String sql = "SELECT password FROM users WHERE username = ?";
 			PreparedStatement stmt = this.getConn().prepareStatement(sql);
@@ -41,6 +42,22 @@ public class UserDao extends AbstractDao {
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				return Optional.of(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			log.error("An SQL error occured.", e);
+		}
+		
+		return Optional.empty();
+	}
+	
+	public Optional<Short> getUserId (String username) {
+		try {
+			String sql = "SELECT user_id FROM users WHERE username = ?";
+			PreparedStatement stmt = this.getConn().prepareStatement(sql);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return Optional.of(rs.getShort(1));
 			}
 		} catch (SQLException e) {
 			log.error("An SQL error occured.", e);
