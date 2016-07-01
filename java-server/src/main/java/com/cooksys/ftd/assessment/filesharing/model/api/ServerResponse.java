@@ -1,5 +1,8 @@
 package com.cooksys.ftd.assessment.filesharing.model.api;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ServerResponse<T> {
 	
 	/**

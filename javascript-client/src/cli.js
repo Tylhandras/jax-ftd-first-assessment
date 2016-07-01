@@ -12,22 +12,24 @@ cli
   .description('Registers user on server')
   .action(function (args, callback) {
     let server = net.createConnection({port: 667}, () => {
-      let register = 'register'
+      let command = 'register'
       let hashed = hash(args.password)
-      server.write(`${JSON.stringify({clientMessage: {register, content: `${args.username} ${hashed}`}})}\n`)
+      server.write(JSON.stringify({ClientMessage: {command, content: `${args.username} ${hashed}`}}) + '\n')
 
       server.on('data', (data) => {
         const { serverResponse } = JSON.parse(data.toString())
         if (serverResponse.error) {
           this.log(`${serverResponse.message}`)
+          callback()
         } else {
           this.log(`${serverResponse.data}`)
+          callback()
         }
       })
     })
   })
 
-cli
+/* cli
   .mode('login <username> <password>')
   .description('Logs into server with given Username and Password')
   .action()
@@ -45,6 +47,6 @@ cli
 cli
   .command('download <database file id> [local file path]')
   .descrition('Retrieves the specified file from the server')
-  .action()
+  .action()*/
 
 export default cli
