@@ -74,7 +74,7 @@ public class ClientHandler implements Runnable {
 			} else if (message.getCommand().equals("login")) {
 				StringWriter sw = new StringWriter();
 				ServerResponse<String> temp = GetUser.getPassword(message.getContent(), this.userDao);
-				marshaller.marshal(temp.getData(), sw);
+				marshaller.marshal(temp, sw);
 				this.writer.println(sw.toString());
 				this.writer.flush();
 			} else if (message.getCommand() == "files") {

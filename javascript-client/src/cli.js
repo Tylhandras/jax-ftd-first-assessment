@@ -67,12 +67,12 @@ cli
       .descrition('Retrieves the specified file from the server')
       .action() */
 
-    server.on('data', (data) => {
+    /* server.on('data', (data) => {
       const { serverResponse } = JSON.parse(data.toString())
       this.log(`${serverResponse.data.value}`)
       server.end()
       callback()
-    })
+    }) */
   })
   .action(function (command, callback) {
     callback()
