@@ -12,7 +12,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import com.cooksys.ftd.assessment.filesharing.dao.*;
 import com.cooksys.ftd.assessment.filesharing.model.api.*;
 import com.cooksys.ftd.assessment.filesharing.model.db.ClientMessage;
+
 
 public class ClientHandler implements Runnable {
 	
@@ -43,12 +43,12 @@ public class ClientHandler implements Runnable {
 			this.content = JAXBContext.newInstance(ServerResponse.class);
 			
 			marshaller = context.createMarshaller();
-			marshaller.setProperty(JAXBContextProperties.MEDIA_TYPE, "application/json");
+			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 			marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			
 			unmarshaller = content.createUnmarshaller();
-			unmarshaller.setProperty(JAXBContextProperties.MEDIA_TYPE, "application/json");
+			unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
 			unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
 		} catch (JAXBException e) {
 			log.error("Error creating client.", e);

@@ -1,3 +1,4 @@
+import fs from 'fs'
 import net from 'net'
 import vorpal from 'vorpal'
 import { hash, compare } from './hashing'
@@ -14,8 +15,9 @@ cli
     let server = net.createConnection({port: 667}, () => {
       let command = 'register'
       let hashed = hash(args.password)
-      server.write(JSON.stringify({ClientMessage: {command, content: `${args.username} ${hashed}`}}) + '\n')
-
+      fs.writeFile('output.json', JSON.stringify(`{ ClientMessage: { ${command}, content: ${args.username} ${hashed}}}\n`))
+      server.write(JSON.stringify(`ClientMessage: {${command}, content: ${args.username} ${hashed}}\n`))
+      this.log('Wrote to server')
       server.on('data', (data) => {
         const { serverResponse } = JSON.parse(data.toString())
         if (serverResponse.error) {
