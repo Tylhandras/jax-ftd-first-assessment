@@ -1,6 +1,6 @@
 import net from 'net'
 import vorpal from 'vorpal'
-import bcryptjs from 'bcryptjs'
+import { hash, compare } from './hashing'
 
 const cli = vorpal()
 
@@ -11,10 +11,19 @@ cli
   .command('register <username> <password>')
   .description('Registers user on server')
   .action(function (args, callback) {
-    let server = net.createConnection(args, (connection) => {
-      server.write(JSON.stringify())
-      server.read()
-      JSON.parse()
+    let server = net.createConnection({port: 667}, () => {
+      let register = 'register'
+      let hashed = hash(args.password)
+      server.write(`${JSON.stringify({clientMessage: {register, content: `${args.username} ${hashed}`}})}\n`)
+
+      server.on('data', (data) => {
+        const { serverResponse } = JSON.parse(data.toString())
+        if (serverResponse.error) {
+          this.log(`${serverResponse.message}`)
+        } else {
+          this.log(`${serverResponse.data}`)
+        }
+      })
     })
   })
 

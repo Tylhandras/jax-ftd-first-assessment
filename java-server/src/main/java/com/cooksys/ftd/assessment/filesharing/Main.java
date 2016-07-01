@@ -19,7 +19,7 @@ public class Main {
 	private static Logger log = LoggerFactory.getLogger(Main.class);
 
 	private static String driver = "com.mysql.cj.jdbc.Driver";
-	private static String url = "jdbc:mysql://localhost:3306/sakila";
+	private static String url = "jdbc:mysql://localhost:3306/ftd-first-assessment";
 	private static String username = "root";
 	private static String password = "bondstone";
 	
