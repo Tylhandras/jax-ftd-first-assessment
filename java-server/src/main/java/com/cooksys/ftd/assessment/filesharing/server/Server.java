@@ -1,9 +1,6 @@
 package com.cooksys.ftd.assessment.filesharing.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -38,13 +35,7 @@ public class Server implements Runnable {
 	}
 	
 	public ClientHandler createClientHandler(Socket socket) throws IOException {
-		ClientHandler handler = new ClientHandler();
-		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		handler.setReader(reader);
-		
-		PrintWriter writer = new PrintWriter(socket.getOutputStream());
-		handler.setWriter(writer);
+		ClientHandler handler = new ClientHandler(socket);
 		
 		handler.setUserDao(userDao);
 		handler.setFileDao(fileDao);

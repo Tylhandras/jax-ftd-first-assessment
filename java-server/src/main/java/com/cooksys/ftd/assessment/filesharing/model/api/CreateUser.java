@@ -5,12 +5,11 @@ import com.cooksys.ftd.assessment.filesharing.model.db.User;
 
 public class CreateUser {
 
-	public static ServerResponse<String> newUser(String userInfo) {
+	public static ServerResponse<String> newUser(String userInfo, UserDao userDao) {
 		User user = new User();
-		UserDao userDao = new UserDao();
 		ServerResponse<String> output = new ServerResponse<String>();
 		String[] args = userInfo.split(" ");
-		short check = GetUser.getId(args[0]).getData();
+		short check = GetUser.getId(args[0], userDao).getData();
 		
 		if (check == 0) {
 			user.setUsername(args[0]);
