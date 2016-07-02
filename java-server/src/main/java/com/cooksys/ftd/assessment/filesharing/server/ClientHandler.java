@@ -68,7 +68,6 @@ public class ClientHandler implements Runnable {
 				StringWriter sw = new StringWriter();
 				ServerResponse<String> temp = CreateUser.newUser(message.getContent(), this.userDao);
 				marshaller.marshal(temp, sw);
-				log.info(sw.toString());
 				this.writer.println(sw.toString());
 				this.writer.flush();
 			} else if (message.getCommand().equals("login")) {
@@ -77,22 +76,22 @@ public class ClientHandler implements Runnable {
 				marshaller.marshal(temp, sw);
 				this.writer.println(sw.toString());
 				this.writer.flush();
-			} else if (message.getCommand() == "files") {
+			} else if (message.getCommand() == "files") { // Not implemented in client
 				StringWriter sw = new StringWriter();
-				ServerResponse<List<String>> temp = IndexFile.getFileList(message.getContent());
-				marshaller.marshal(temp.getData(), sw);
+				ServerResponse<List<String>> temp = IndexFile.getFileList(message.getContent(), this.userDao, this.fileDao);
+				marshaller.marshal(temp, sw);
 				this.writer.println(sw.toString());
 				this.writer.flush();
-			} else if (message.getCommand() == "upload") {
+			} else if (message.getCommand() == "upload") { // Not implemented in client
 				StringWriter sw = new StringWriter();
-				ServerResponse<String> temp = AddFile.newFile(message.getContent());
-				marshaller.marshal(temp.getData(), sw);
+				ServerResponse<String> temp = AddFile.newFile(message.getContent(), this.userDao, this.fileDao);
+				marshaller.marshal(temp, sw);
 				this.writer.println(sw.toString());
 				this.writer.flush();
-			} else if (message.getCommand() == "download") {
+			} else if (message.getCommand() == "download") { // Not implemented in client
 				StringWriter sw = new StringWriter();
-				ServerResponse<String> temp = SendFile.getFile(message.getContent());
-				marshaller.marshal(temp.getData(), sw);
+				ServerResponse<String> temp = SendFile.getFile(message.getContent(), this.fileDao);
+				marshaller.marshal(temp, sw);
 				this.writer.println(sw.toString());
 				this.writer.flush();
 			}

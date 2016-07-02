@@ -6,8 +6,7 @@ import com.cooksys.ftd.assessment.filesharing.dao.FileDao;
 
 public class SendFile {
 	
-	public static ServerResponse<String> getFile(String userInfo) {
-		FileDao fileDao = new FileDao();
+	public static ServerResponse<String> getFile(String userInfo, FileDao fileDao) {
 		ServerResponse<String> output = new ServerResponse<String>();
 		String[] args = userInfo.split(" ");
 		
