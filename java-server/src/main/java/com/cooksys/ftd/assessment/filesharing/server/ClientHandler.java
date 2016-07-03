@@ -76,10 +76,11 @@ public class ClientHandler implements Runnable {
 				marshaller.marshal(temp, sw);
 				this.writer.println(sw.toString());
 				this.writer.flush();
-			} else if (message.getCommand() == "files") { // Not implemented in client
+			} else if (message.getCommand() == "files") {
 				StringWriter sw = new StringWriter();
 				ServerResponse<List<String>> temp = IndexFile.getFileList(message.getContent(), this.userDao, this.fileDao);
 				marshaller.marshal(temp, sw);
+				log.info(sw.toString());
 				this.writer.println(sw.toString());
 				this.writer.flush();
 			} else if (message.getCommand() == "upload") { // Not implemented in client
