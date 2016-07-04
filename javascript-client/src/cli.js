@@ -1,3 +1,4 @@
+import fs from 'fs'
 import net from 'net'
 import vorpal from 'vorpal'
 import { hash, compare } from './hashing'
@@ -79,13 +80,33 @@ cli
      })
    })
 
- /* cli
+cli
    .command('upload <localPath> [path stored in database]')
    .description('Uploads a new file to the server')
    .action(function (args, callback) {
      server = net.createConnection({port: 667}, () => {
        let command = 'upload'
-       server.write(JSON.stringify({clientMessage: {command: command, content: Username}}) + '\n')
+       let a = fs.readFile(args.localPath)
+       let fileData = Buffer(a).toString('base64')
+       server.write(JSON.stringify({clientMessage: {command: command, content: Username + ' ' + args.localPath + ' ' + fileData}}) + '\n')
+
+       server.on('data', (data) => {
+         const { serverResponse } = JSON.parse(data.toString())
+         cli.log(serverResponse.data.value)
+       })
+       fs.close()
+       server.end()
+       callback()
+     })
+   })
+
+cli
+   .command('download <databaseId> [local file path]')
+   .descrition('Retrieves the specified file from the server')
+   .action(function (args, callback) {
+     server = net.createConnection({port: 667}, () => {
+       let command = 'download'
+       server.write(JSON.stringify({clientMessage: {command: command, content: Username + ' ' + args.databaseId}}) + '\n')
 
        server.on('data', (data) => {
          const { serverResponse } = JSON.parse(data.toString())
@@ -95,22 +116,5 @@ cli
        callback()
      })
    })
-
- cli
-   .command('download <databaseId> [local file path]')
-   .descrition('Retrieves the specified file from the server')
-   .action(function (args, callback) {
-     server = net.createConnection({port: 667}, () => {
-       let command = 'download'
-       server.write(JSON.stringify({clientMessage: {command: command, content: Username + ' ' + databaseId}}) + '\n')
-
-       server.on('data', (data) => {
-         const { serverResponse } = JSON.parse(data.toString())
-         cli.log(serverResponse.data.value)
-       })
-       server.end()
-       callback()
-     })
-   }) */
 
 export default cli
